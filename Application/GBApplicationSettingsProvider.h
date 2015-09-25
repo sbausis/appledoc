@@ -421,6 +421,10 @@ NSString *NSStringFromGBPublishedFeedFormats(GBPublishedFeedFormats format);
  */
 @property (assign) int exitCodeThreshold;
 
+/** Title of the documentation section */
+@property (copy) NSString *docsSectionTitle;
+
+
 ///---------------------------------------------------------------------------------------
 /// @name Warnings handling
 ///---------------------------------------------------------------------------------------
@@ -466,6 +470,9 @@ NSString *NSStringFromGBPublishedFeedFormats(GBPublishedFeedFormats format);
 
 /** Indicates whether missing method argument descriptions in comments should result in warnings or not. */
 @property (assign) BOOL warnOnMissingMethodArgument;
+
+/** Indicates whether unsupported typedef enum in warnings or not. */
+@property (assign) BOOL warnOnUnsupportedTypedefEnum;
 
 ///---------------------------------------------------------------------------------------
 /// @name Application-wide HTML helpers

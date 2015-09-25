@@ -43,6 +43,7 @@ static char *kGBArgPublishDocSet = "publish-docset";
 static char *kGBArgHTMLAnchorFormat = "html-anchors";
 static char *kGBArgKeepIntermediateFiles = "keep-intermediate-files";
 static char *kGBArgExitCodeThreshold = "exit-threshold";
+static char *kGBArgDocsSectionTitle = "docs-section-title";
 
 static char *kGBArgRepeatFirstParagraph = "repeat-first-par";
 static char *kGBArgPreprocessHeaderDoc = "preprocess-headerdoc";
@@ -68,6 +69,7 @@ static char *kGBArgWarnOnEmptyDescription = "warn-empty-description";
 static char *kGBArgWarnOnUnknownDirective = "warn-unknown-directive";
 static char *kGBArgWarnOnInvalidCrossReference = "warn-invalid-crossref";
 static char *kGBArgWarnOnMissingMethodArgument = "warn-missing-arg";
+static char *kGBArgWarnOnUnsupportedTypedefEnum = "warn-unsupported-typedef-enum";
 
 static char *kGBArgDocSetBundleIdentifier = "docset-bundle-id";
 static char *kGBArgDocSetBundleName = "docset-bundle-name";
@@ -300,6 +302,7 @@ static char *kGBArgHelp = "help";
 		{ kGBArgPrefixMergedCategoriesSectionsWithCategoryName,				0,		DDGetoptNoArgument },
     	{ kGBArgUseCodeOrder,                                               0,		DDGetoptNoArgument },
 		{ kGBArgExitCodeThreshold,											0,		DDGetoptRequiredArgument },
+		{ kGBArgDocsSectionTitle,                                           0,		DDGetoptRequiredArgument },
 		{ GBNoArg(kGBArgKeepIntermediateFiles),								0,		DDGetoptNoArgument },
 		{ GBNoArg(kGBArgKeepUndocumentedObjects),							0,		DDGetoptNoArgument },
 		{ GBNoArg(kGBArgKeepUndocumentedMembers),							0,		DDGetoptNoArgument },
@@ -319,6 +322,7 @@ static char *kGBArgHelp = "help";
 		{ kGBArgWarnOnUnknownDirective,										0,		DDGetoptNoArgument },
 		{ kGBArgWarnOnInvalidCrossReference,								0,		DDGetoptNoArgument },
 		{ kGBArgWarnOnMissingMethodArgument,								0,		DDGetoptNoArgument },
+        { kGBArgWarnOnUnsupportedTypedefEnum,								0,		DDGetoptNoArgument },
 		{ GBNoArg(kGBArgWarnOnMissingOutputPath),							0,		DDGetoptNoArgument },
 		{ GBNoArg(kGBArgWarnOnMissingCompanyIdentifier),					0,		DDGetoptNoArgument },
 		{ GBNoArg(kGBArgWarnOnUndocumentedObject),							0,		DDGetoptNoArgument },
@@ -327,6 +331,7 @@ static char *kGBArgHelp = "help";
 		{ GBNoArg(kGBArgWarnOnUnknownDirective),							0,		DDGetoptNoArgument },
 		{ GBNoArg(kGBArgWarnOnInvalidCrossReference),						0,		DDGetoptNoArgument },
 		{ GBNoArg(kGBArgWarnOnMissingMethodArgument),						0,		DDGetoptNoArgument },
+        { GBNoArg(kGBArgWarnOnUnsupportedTypedefEnum),						0,		DDGetoptNoArgument },
 		
 		{ kGBArgLogFormat,													0,		DDGetoptRequiredArgument },
 		{ kGBArgVerbose,													0,		DDGetoptRequiredArgument },
@@ -814,6 +819,7 @@ static char *kGBArgHelp = "help";
 - (void)setNoExplicitCrossref:(BOOL)value { [self setExplicitCrossref:!value]; }
 
 - (void)setExitThreshold:(int)value { self.settings.exitCodeThreshold = value; }
+- (void)setDocsSectionTitle:(NSString *)value { self.settings.docsSectionTitle = value; }
 - (void)setKeepIntermediateFiles:(BOOL)value { self.settings.keepIntermediateFiles = value;}
 - (void)setKeepUndocumentedObjects:(BOOL)value { self.settings.keepUndocumentedObjects = value; }
 - (void)setKeepUndocumentedMembers:(BOOL)value { self.settings.keepUndocumentedMembers = value; }
@@ -849,6 +855,7 @@ static char *kGBArgHelp = "help";
 - (void)setWarnUnknownDirective:(BOOL)value { self.settings.warnOnUnknownDirective = value; }
 - (void)setWarnInvalidCrossref:(BOOL)value { self.settings.warnOnInvalidCrossReference = value; }
 - (void)setWarnMissingArg:(BOOL)value { self.settings.warnOnMissingMethodArgument = value; }
+- (void)setWarnUnsupportedTypedefEnum:(BOOL)value { self.settings.warnOnUnsupportedTypedefEnum = value; }
 - (void)setNoWarnMissingOutputPath:(BOOL)value { self.settings.warnOnMissingOutputPathArgument = !value; }
 - (void)setNoWarnMissingCompanyId:(BOOL)value { self.settings.warnOnMissingCompanyIdentifier = !value; }
 - (void)setNoWarnUndocumentedObject:(BOOL)value { self.settings.warnOnUndocumentedObject = !value; }
@@ -857,6 +864,7 @@ static char *kGBArgHelp = "help";
 - (void)setNoWarnUnknownDirective:(BOOL)value { self.settings.warnOnUnknownDirective = !value; }
 - (void)setNoWarnInvalidCrossref:(BOOL)value { self.settings.warnOnInvalidCrossReference = !value; }
 - (void)setNoWarnMissingArg:(BOOL)value { self.settings.warnOnMissingMethodArgument = !value; }
+- (void)setNoWarnUnsupportedTypedefEnum:(BOOL)value { self.settings.warnOnUnsupportedTypedefEnum = !value; }
 
 - (void)setDocsetBundleId:(NSString *)value { self.settings.docsetBundleIdentifier = value; }
 - (void)setDocsetBundleName:(NSString *)value { self.settings.docsetBundleName = value; }
@@ -879,7 +887,7 @@ static char *kGBArgHelp = "help";
 
 - (void)setDocsetBundleFilename:(NSString *)value { self.settings.docsetBundleFilename = value; }
 - (void)setDocsetAtomFilename:(NSString *)value { self.settings.docsetAtomFilename = value; }
-- (void)setDocsetXMLFilename:(NSString *)value { self.settings.docsetXMLFilename = value; }
+- (void)setDocsetXmlFilename:(NSString *)value { self.settings.docsetXMLFilename = value; }
 - (void)setDocsetPackageFilename:(NSString *)value { self.settings.docsetPackageFilename = value; }
 
 @synthesize additionalInputPaths;
@@ -967,6 +975,7 @@ static char *kGBArgHelp = "help";
     ddprintf(@"--%s = %@\n", kGBArgCrossRefFormat, self.settings.commentComponents.crossReferenceMarkersTemplate);
     ddprintf(@"--%s = %@\n", kGBArgUseCodeOrder, self.settings.useCodeOrder);
     ddprintf(@"--%s = %ld\n", kGBArgExitCodeThreshold, self.settings.exitCodeThreshold);
+    ddprintf(@"--%s = %@\n", kGBArgDocsSectionTitle, self.settings.docsSectionTitle);
     ddprintf(@"\n");
     
     ddprintf(@"--%s = %@\n", kGBArgWarnOnMissingOutputPath, PRINT_BOOL(self.settings.warnOnMissingOutputPathArgument));
@@ -977,6 +986,7 @@ static char *kGBArgHelp = "help";
     ddprintf(@"--%s = %@\n", kGBArgWarnOnUnknownDirective, PRINT_BOOL(self.settings.warnOnUnknownDirective));
     ddprintf(@"--%s = %@\n", kGBArgWarnOnInvalidCrossReference, PRINT_BOOL(self.settings.warnOnInvalidCrossReference));
     ddprintf(@"--%s = %@\n", kGBArgWarnOnMissingMethodArgument, PRINT_BOOL(self.settings.warnOnMissingMethodArgument));
+    ddprintf(@"--%s = %@\n", kGBArgWarnOnUnsupportedTypedefEnum, PRINT_BOOL(self.settings.warnOnUnsupportedTypedefEnum));
     ddprintf(@"\n");
     
     ddprintf(@"--%s = %@\n", kGBArgLogFormat, self.logformat);
@@ -1037,7 +1047,8 @@ static char *kGBArgHelp = "help";
     PRINT_USAGE(@"   ", kGBArgUseCodeOrder, @"", @"[b] Order sections by the order specified in the input files");
     PRINT_USAGE(@"   ", kGBArgCrossRefFormat, @"<string>", @"Cross reference template regex");
     PRINT_USAGE(@"   ", kGBArgExitCodeThreshold, @"<number>", @"Exit code threshold below which 0 is returned");
-	ddprintf(@"\n");
+	PRINT_USAGE(@"   ", kGBArgDocsSectionTitle, @"<string>", @"Title of the documentation section (defaults to \"Programming Guides\"");
+    ddprintf(@"\n");
 	ddprintf(@"WARNINGS\n");
 	PRINT_USAGE(@"   ", kGBArgWarnOnMissingOutputPath, @"", @"[b] Warn if output path is not given");
 	PRINT_USAGE(@"   ", kGBArgWarnOnMissingCompanyIdentifier, @"", @"[b] Warn if company ID is not given");
@@ -1047,6 +1058,7 @@ static char *kGBArgHelp = "help";
 	PRINT_USAGE(@"   ", kGBArgWarnOnUnknownDirective, @"", @"[b] Warn on unknown directive or format");
 	PRINT_USAGE(@"   ", kGBArgWarnOnInvalidCrossReference, @"", @"[b] Warn on invalid cross reference");
 	PRINT_USAGE(@"   ", kGBArgWarnOnMissingMethodArgument, @"", @"[b] Warn on missing method argument documentation");
+    PRINT_USAGE(@"   ", kGBArgWarnOnUnsupportedTypedefEnum, @"", @"[b] Warn on unsupported typedef enum");
 	ddprintf(@"\n");
 	ddprintf(@"DOCUMENTATION SET INFO\n");
 	PRINT_USAGE(@"   ", kGBArgDocSetBundleIdentifier, @"<string>", @"[*] DocSet bundle identifier");

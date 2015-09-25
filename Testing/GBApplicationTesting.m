@@ -419,6 +419,15 @@
 	assertThatBool(settings2.warnOnMissingMethodArgument, equalToBool(NO));
 }
 
+- (void)testWarnOnUnsupportedTypedefEnum_shouldAssignValueToSettings {
+    // setup & execute
+    GBApplicationSettingsProvider *settings1 = [self settingsByRunningWithArgs:@"--warn-unsupported-typedef-enum", nil];
+    GBApplicationSettingsProvider *settings2 = [self settingsByRunningWithArgs:@"--no-warn-unsupported-typedef-enum", nil];
+    // verify
+    assertThatBool(settings1.warnOnUnsupportedTypedefEnum, equalToBool(YES));
+    assertThatBool(settings2.warnOnUnsupportedTypedefEnum, equalToBool(NO));
+}
+
 #pragma mark Documentation set settings testing
 
 - (void)testDocSetBudnleIdentifier_shouldAssignValueToSettings {
@@ -590,9 +599,6 @@
 			// get the key corresponding to the argument
 			NSString *key = [DDGetoptLongParser optionToKey:arg];
             
-            // When passed --docset-xml-filename, +[DDGetoptLongParser keyFromOption:] will
-            // return docsetXmlFilename but we need instead of docsetXMLFilename.
-            key = [key stringByReplacingOccurrencesOfString:@"Xml" withString:@"XML"];
             key = [key stringByReplacingOccurrencesOfString:@"xcrun" withString:@"xCRun"];
 			
 			// if we have a value following, use it for KVC, otherwise just send YES
